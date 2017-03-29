@@ -1,0 +1,13 @@
+[
+  {"type": "SITE_VISIT", "verb": "NEW", "key": "av1", "event_time": "2017-01-01T12:45:52.041Z", "customer_id": "a"},
+  {"type": "SITE_VISIT", "verb": "NEW", "key": "av2", "event_time": "2017-01-08T12:45:52.041Z", "customer_id": "a"},
+  {"type": "SITE_VISIT", "verb": "NEW", "key": "av3", "event_time": "2017-01-15T12:45:52.041Z", "customer_id": "a"},
+  {"type": "SITE_VISIT", "verb": "NEW", "key": "av4", "event_time": "2017-01-22T12:45:52.041Z", "customer_id": "a"},
+  {"type": "ORDER", "verb": "NEW", "key": "ao1", "event_time": "2017-01-06T12:55:55.555Z", "customer_id": "a", "total_amount": "USD 20.00"},
+
+  {"type": "SITE_VISIT", "verb": "NEW", "key": "bv1", "event_time": "2017-01-01T12:45:52.041Z", "customer_id": "b"},
+  {"type": "SITE_VISIT", "verb": "NEW", "key": "bv2", "event_time": "2017-02-08T12:45:52.041Z", "customer_id": "b"},
+  {"type": "SITE_VISIT", "verb": "NEW", "key": "bv3", "event_time": "2017-03-15T12:45:52.041Z", "customer_id": "b"},
+  {"type": "SITE_VISIT", "verb": "NEW", "key": "bv4", "event_time": "2017-04-22T12:45:52.041Z", "customer_id": "b"},
+  {"type": "ORDER", "verb": "NEW", "key": "bo1", "event_time": "2017-01-06T12:55:55.555Z", "customer_id": "b", "total_amount": "USD 40.00"}
+]
