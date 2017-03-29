@@ -38,13 +38,12 @@ public class EventKey {
 
         EventKey eventKey = (EventKey) o;
 
-        return !(key != null ? !key.equals(eventKey.key) : eventKey.key != null);
+        return key.equals(eventKey.key);
 
     }
 
     @Override
     public int hashCode() {
-        return key != null ? key.hashCode() : 0;
+        return key.hashCode();
     }
-
 }

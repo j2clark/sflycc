@@ -40,14 +40,14 @@ public class EventVerb {
             return false;
         }
 
-        EventVerb eventVerb = (EventVerb) o;
+        EventVerb verb1 = (EventVerb) o;
 
-        return !(verb != null ? !verb.equals(eventVerb.verb) : eventVerb.verb != null);
+        return verb.equals(verb1.verb);
 
     }
 
     @Override
     public int hashCode() {
-        return verb != null ? verb.hashCode() : 0;
+        return verb.hashCode();
     }
 }

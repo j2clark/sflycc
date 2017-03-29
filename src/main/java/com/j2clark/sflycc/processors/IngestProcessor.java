@@ -15,20 +15,4 @@ public interface IngestProcessor {
     // we will want to wrap abstract JSONObject into an interface or abstract class, so we can consume various formats if needed
     Event adapt(UUID transactionId, JSONObject jsonObject) throws UnsupportedEventException;
 
-    class UnsupportedEventException extends Exception {
-
-        // todo: add exception detail
-        // transactionId, raw event data, why exactly is it unsupported
-
-        public UnsupportedEventException(String msg) {
-            super(msg);
-        }
-
-        public UnsupportedEventException(Throwable t) {
-            super(t);
-        }
-
-
-
-    }
 }

@@ -36,14 +36,14 @@ public class EventType {
             return false;
         }
 
-        EventType eventType = (EventType) o;
+        EventType type1 = (EventType) o;
 
-        return !(type != null ? !type.equals(eventType.type) : eventType.type != null);
+        return type.equals(type1.type);
 
     }
 
     @Override
     public int hashCode() {
-        return type != null ? type.hashCode() : 0;
+        return type.hashCode();
     }
 }

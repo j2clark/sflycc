@@ -30,6 +30,14 @@ public abstract class AbstractIngestProcessor implements IngestProcessor {
     private final Set<EventType> supportedTypes;
     private final Set<EventVerb> supportedVerbs;
 
+    /**
+     * Append event specific data into event using existing builder
+     *
+     * BE a good citizen and catch all exceptions and convert to UnsupportedEventException or subclass
+     */
+    protected abstract void adapt(UUID transactionId, JSONObject json, EventBuilder eventBuilder)
+        throws UnsupportedEventException;
+
     @Autowired
     public AbstractIngestProcessor(IngestProcessorRegistry ingestProcessorRegistry,
                                    Collection<EventType> supportedTypes,
@@ -58,13 +66,6 @@ public abstract class AbstractIngestProcessor implements IngestProcessor {
         return supportedTypes;
     }
 
-    /**
-     * Append event specific data into event using existing builder
-     *
-     * BE a good citizen and catch all exceptions and convert to UnsupportedEventException or subclass
-     */
-    public abstract void adapt(UUID transactionId, JSONObject json, EventBuilder eventBuilder)
-        throws UnsupportedEventException;
 
     @Override
     public Event adapt(UUID transactionId, JSONObject json) throws UnsupportedEventException {
@@ -126,7 +127,7 @@ public abstract class AbstractIngestProcessor implements IngestProcessor {
         return tagMap;
     }
 
-    public EventType type(JSONObject json) {
+    protected EventType type(JSONObject json) {
         if (!StringUtils.isEmpty(json.getString("type"))) {
             return EventType.of(json.getString("type"));
         }
@@ -134,7 +135,7 @@ public abstract class AbstractIngestProcessor implements IngestProcessor {
         return null;
     }
 
-    public EventVerb verb(JSONObject json) {
+    protected EventVerb verb(JSONObject json) {
         if (!StringUtils.isEmpty(json.getString("verb"))) {
             return EventVerb.of(json.getString("verb"));
         }
@@ -142,7 +143,7 @@ public abstract class AbstractIngestProcessor implements IngestProcessor {
         return null;
     }
 
-    public EventKey key(JSONObject json) {
+    protected EventKey key(JSONObject json) {
         if (!StringUtils.isEmpty(json.getString("key"))) {
             return EventKey.of(json.getString("key"));
         }
@@ -150,7 +151,7 @@ public abstract class AbstractIngestProcessor implements IngestProcessor {
         return null;
     }
 
-    public Date eventDateTime(JSONObject json) {
+    protected Date eventDateTime(JSONObject json) {
         return EventBuilder.parseISODate(json.getString("event_time"));
     }
 

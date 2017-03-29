@@ -33,6 +33,7 @@ public class OrderIngestProcessor extends AbstractIngestProcessor implements Ing
 
         eventBuilder.withAttribute("customer_id", findRequiredAttribute(transactionId, json, "customer_id"));
 
+        // I am assuming a different money format than was listed in the sample input
         Money orderTotal = EventBuilder.parseMoney(
             findRequiredAttribute(transactionId, json, "total_amount")
         );

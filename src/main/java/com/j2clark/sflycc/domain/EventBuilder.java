@@ -1,6 +1,6 @@
 package com.j2clark.sflycc.domain;
 
-import com.j2clark.sflycc.processors.IngestProcessor;
+import com.j2clark.sflycc.processors.UnsupportedEventException;
 
 import org.joda.money.Money;
 import org.joda.time.DateTime;
@@ -74,19 +74,19 @@ public class EventBuilder {
     }
 
     public EventBuilder withAttribute(String name, Money value) {
-        return withAttribute(new Event.Attribute<Money>(name, value));
+        return withAttribute(new Event.Attribute<>(name, value));
     }
 
     public EventBuilder withAttribute(String name, String value) {
-        return withAttribute(new Event.Attribute<String>(name, value));
+        return withAttribute(new Event.Attribute<>(name, value));
     }
 
     public EventBuilder withAttribute(String name, Date value) {
-        return withAttribute(new Event.Attribute<Date>(name, value));
+        return withAttribute(new Event.Attribute<>(name, value));
     }
 
     public EventBuilder withAttribute(String name, Long value) {
-        return withAttribute(new Event.Attribute<Long>(name, value));
+        return withAttribute(new Event.Attribute<>(name, value));
     }
 
     public EventBuilder withAttribute(Event.Attribute attribute) {
@@ -114,21 +114,21 @@ public class EventBuilder {
         return d;
     }
 
-    public Event build() throws IngestProcessor.UnsupportedEventException {
+    public Event build() throws UnsupportedEventException {
         if (type == null) {
-            throw new IngestProcessor.UnsupportedEventException("event type cannot be null");
+            throw new UnsupportedEventException("event type cannot be null");
         }
 
         if (verb == null) {
-            throw new IngestProcessor.UnsupportedEventException("event verb cannot be null");
+            throw new UnsupportedEventException("event verb cannot be null");
         }
 
         if (key == null) {
-            throw new IngestProcessor.UnsupportedEventException("event key cannot be null");
+            throw new UnsupportedEventException("event key cannot be null");
         }
 
         if (timestamp == null) {
-            throw new IngestProcessor.UnsupportedEventException("event timestamp cannot be null");
+            throw new UnsupportedEventException("event timestamp cannot be null");
         }
         return new EventImpl(type, verb, key, timestamp, attributes, tags);
     }

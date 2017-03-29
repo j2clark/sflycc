@@ -15,6 +15,8 @@ import java.util.Optional;
  *
  * It relies on a processor registering itself upon instantiation
  * See CustomerIngestProcessor constructor for an example
+ *
+ * This can be a difficult pattern to understand at first glance, which is a strong argument to not use it.
  */
 @Component
 public class IngestProcessorRegistry {
@@ -22,7 +24,7 @@ public class IngestProcessorRegistry {
     public final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final Map<EventType,IngestProcessor>
-        ingestProcessors = new HashMap<EventType, IngestProcessor>();
+        ingestProcessors = new HashMap<>();
     public IngestProcessorRegistry register(IngestProcessor ingestProcessor) {
         // a single processor can support multiple event types
 

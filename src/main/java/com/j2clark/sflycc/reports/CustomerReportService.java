@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,6 @@ import java.util.stream.Collectors;
 public class CustomerReportService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
-    private static long WEEK = 1000*60*60*24*7;
 
     /*
         A simple LTV can be calculated using the following equation:
@@ -34,9 +33,15 @@ public class CustomerReportService {
         List<Customer> customers = new ArrayList<>();
         if (!d.getEvents().isEmpty()) {
 
-            // first group all events by customer - since each will have their own time range
+            // sort according to timestamp
+            Collection<Event> sorted = d.getEvents().stream()
+                .sorted((e1, e2) -> Long.compare(e1.getTimestamp(), e2.getTimestamp()))
+                .collect(Collectors.toList());
+
+
+            // first group all important events by customer - since each will have their own time range
             Map<String,Map<String,List<Event>>> customerEvents = new HashMap<>();
-            for (Event event : d.getEvents()) {
+            for (Event event : sorted) {
                 if (EventType.of("ORDER").equals(event.getType()) ||
                     EventType.of("SITE_VISIT").equals(event.getType())) {
 
@@ -71,7 +76,8 @@ public class CustomerReportService {
                 OptionalLong maxTimestamp = all.stream().mapToLong(Event::getTimestamp).max();
                 if (maxTimestamp.isPresent() && minTimestamp.isPresent()) {
 
-                    // what is our date range, is it enough to get meaningful data?
+                    // what is our date range, and is it enough to get meaningful data?
+                    // avoiding that check for now
                     long range = maxTimestamp.getAsLong() - minTimestamp.getAsLong();
 
                     int visits = customer.get("SITE_VISIT").size();
@@ -88,7 +94,10 @@ public class CustomerReportService {
                     if (totalSpent.isPresent()) {
                         // we have data to work with... calculate
 
-                        int weeks = (int) range/ (int)WEEK; // do we care about rounding?
+                        // very simple approach to determine week
+                        // based simple on duration spanned by events
+                        long WEEK = 1000 * 60 * 60 * 24 * 7;
+                        int weeks = (int) range/ (int) WEEK; // do we care about rounding?
                         if (weeks < 1) weeks = 1;
 
                         // total/visits = expenditure per visit
@@ -122,26 +131,4 @@ public class CustomerReportService {
         ).limit(resultCount).collect(Collectors.toList());
     }
 
-    public static class Customer {
-
-        private final String customerId;
-        private final Money ltv;
-
-        public Customer(String customerId, Money ltv) {
-            this.customerId = customerId;
-            this.ltv = ltv;
-        }
-
-        public String getCustomerId() {
-            return customerId;
-        }
-
-        public Money getLtv() {
-            return ltv;
-        }
-
-        public String toString() {
-            return "Customer{id["+customerId+"], ltv["+ltv+"]}";
-        }
-    }
 }
